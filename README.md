@@ -25,8 +25,7 @@ cv-ml-supercapacitor-bfo/
 ├── models/                # Serialized AI models (.h5, .pkl) and scalers
 ├── scripts/               # Modular Python backend for data processing and ML training
 ├── notebooks/             # Master Jupyter/Colab notebook with exploratory data analysis
-├── dashboard/             # Premium HTML/CSS/JS frontend application for live demos
-├── docs/                  # Project summaries and documentation
+├── docs/                  # Premium HTML/CSS/JS frontend application for live demos
 ├── requirements.txt       # Python environment dependencies
 └── README.md              # Project storefront
 
@@ -45,7 +44,7 @@ python evaluate.py
 2. The Interactive Dashboard (Web)
 To view the presentation deck and interact with the Live Simulation dashboard:
 
-Navigate to the dashboard/ folder.
+Navigate to the docs/ folder.
 
 Double-click index.html to open it in any modern web browser.
 
