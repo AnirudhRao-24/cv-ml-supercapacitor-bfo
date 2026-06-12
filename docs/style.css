@@ -1,6 +1,6 @@
 /* ==========================================
-   PREMIUM SAAS STYLESHEET
-   ========================================== */
+    PREMIUM SAAS STYLESHEET
+    ========================================== */
 :root {
     /* Color Palette */
     --primary: #4F46E5;       /* Modern Indigo */
@@ -261,7 +261,11 @@ button {
 }
 
 .slide-text { flex: 1.2; }
-.slide-chart { flex: 1; min-width: 0; }
+.slide-chart { 
+    flex: 1; 
+    min-width: 0; 
+    position: relative; /* important for chart responsiveness */
+}
 
 /* Slide Controls */
 .slide-controls {
@@ -300,13 +304,15 @@ button {
     width: 6.66%;
     transition: width 0.3s ease;
 }
+
 /* --- Support & Resources Card (Slide 15) --- */
 .support-info {
     margin-top: 40px;
     padding: 25px;
-    background: rgba(79, 70, 229, 0.03); /* Subtle primary color tint */
+    background: rgba(79, 70, 229, 0.03);
     border: 1px solid rgba(79, 70, 229, 0.15);
     animation: slideUp 0.6s ease forwards;
+    border-radius: 12px;
 }
 
 .support-info h4 {
@@ -335,6 +341,10 @@ button {
     background: #ffffff;
     font-size: 0.9rem;
     transition: all 0.3s ease;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid #CBD5E1;
+    color: var(--text-main);
 }
 
 .resource-links a:hover {
@@ -357,7 +367,7 @@ button {
 .subtitle { color: var(--text-light); font-size: 0.9rem; margin-bottom: 30px; }
 
 .chart-panel { padding: 30px; display: flex; flex-direction: column; }
-.chart-wrapper { flex-grow: 1; min-height: 350px; }
+.chart-wrapper { flex-grow: 1; min-height: 350px; position: relative; }
 
 .metrics-grid {
     display: grid;
@@ -381,3 +391,87 @@ button {
 .metric-card.highlight { background: rgba(16, 185, 129, 0.05); border-color: rgba(16, 185, 129, 0.2); }
 .metric-card.highlight .value { color: var(--secondary); }
 .metric-card .sub-text { font-size: 0.85rem; color: var(--secondary); font-weight: 600; margin-top: 5px; }
+
+/* ==========================================
+    RESPONSIVE DESIGN (MOBILES, TABLETS)
+    ========================================== */
+@media (max-width: 992px) {
+    .demo-layout {
+        grid-template-columns: 1fr; /* Stack control panel and chart */
+    }
+    .slide-layout {
+        flex-direction: column;
+        gap: 30px;
+    }
+    .slide-chart {
+        width: 100%;
+        min-height: 300px;
+    }
+    .slide h2 { font-size: 1.8rem; }
+}
+
+@media (max-width: 768px) {
+    /* Navbar Mobile */
+    .navbar {
+        flex-direction: column;
+        padding: 15px;
+        gap: 15px;
+        margin: 10px;
+    }
+    .nav-tabs {
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+    }
+    .nav-tabs button {
+        flex: 1;
+        text-align: center;
+        font-size: 0.9rem;
+    }
+
+    /* Main Container Mobile */
+    .container { padding: 0 10px; }
+
+    /* Login Mobile */
+    .login-card { padding: 30px 20px; }
+
+    /* Slides Mobile */
+    .slide-container {
+        padding: 20px;
+        min-height: auto;
+    }
+    .slide h2 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+    .slide ul {
+        font-size: 1rem;
+        padding-left: 15px;
+    }
+    .hero-text {
+        font-size: 1.1rem;
+        margin-top: 20px;
+    }
+
+    /* Controls Mobile */
+    .slide-controls {
+        flex-direction: column;
+        gap: 15px;
+    }
+    .progress-container {
+        margin: 10px 0;
+        width: 100%;
+    }
+    #btn-prev, #btn-next {
+        width: 100%;
+    }
+
+    /* Demo Panel Mobile */
+    .control-panel, .chart-panel { padding: 20px; }
+    .metrics-grid {
+        grid-template-columns: 1fr; /* Stack metrics */
+        gap: 15px;
+    }
+    .metric-card .value { font-size: 1.5rem; }
+    .chart-wrapper { min-height: 250px; }
+}
