@@ -11,15 +11,15 @@ Chart.defaults.scale.grid.color = '#E2E8F0';
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-// TODO: Replace with your actual Firebase config
+// Firebase config provided
 const firebaseConfig = {
-  apiKey: "AIzaSyA5SXvJuwpdqgxv6Mx1ZwySy0bLXR4_A64",
-  authDomain: "ml-cv-prediction.firebaseapp.com",
-  projectId: "ml-cv-prediction",
-  storageBucket: "ml-cv-prediction.firebasestorage.app",
-  messagingSenderId: "238161403374",
-  appId: "1:238161403374:web:4fb6d1b3ce2cc0a6e442ff",
-  measurementId: "G-ZNH0CPFX54"
+    apiKey: "AIzaSyA5SXvJuwpdqgxv6Mx1ZwySy0bLXR4_A64",
+    authDomain: "ml-cv-prediction.firebaseapp.com",
+    projectId: "ml-cv-prediction",
+    storageBucket: "ml-cv-prediction.firebasestorage.app",
+    messagingSenderId: "238161403374",
+    appId: "1:238161403374:web:4fb6d1b3ce2cc0a6e442ff",
+    measurementId: "G-ZNH0CPFX54"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -133,7 +133,7 @@ function renderDatasetChart() {
             labels: ['Training Data', 'Validation Data'],
             datasets: [{ data: [216200, 2000], backgroundColor: ['#4F46E5', '#10B981'], borderWidth: 0, hoverOffset: 5 }]
         },
-        options: { animation: animConfig, plugins: { legend: { position: 'bottom' } }, cutout: '70%' }
+        options: { maintainAspectRatio: false, animation: animConfig, plugins: { legend: { position: 'bottom' } }, cutout: '70%' }
     });
 }
 
@@ -145,7 +145,7 @@ function renderRedoxPie() {
             labels: ['Oxidation State (1)', 'Reduction State (0)'],
             datasets: [{ data: [50, 50], backgroundColor: ['#F43F5E', '#3B82F6'], borderWidth: 0, hoverOffset: 5 }]
         },
-        options: { animation: animConfig, plugins: { legend: { position: 'bottom' } } }
+        options: { maintainAspectRatio: false, animation: animConfig, plugins: { legend: { position: 'bottom' } } }
     });
 }
 
@@ -166,6 +166,7 @@ function renderAnnChart() {
             ]
         },
         options: { 
+            maintainAspectRatio: false,
             animation: animConfig, 
             plugins: { title: { display: true, text: 'ANN Learning Curve (MSE vs Epochs)' }, legend: { position: 'bottom' } },
             scales: { x: { title: { display: true, text: 'Epochs' } }, y: { title: { display: true, text: 'Loss (MSE)' } } }
@@ -188,6 +189,7 @@ function renderRfChart() {
             }]
         },
         options: { 
+            maintainAspectRatio: false,
             animation: animConfig, 
             plugins: { title: { display: true, text: 'Random Forest Feature Importance' }, legend: { display: false } },
             scales: { x: { max: 50, title: { display: true, text: 'Importance (%)' } } }
@@ -215,6 +217,7 @@ function renderXgbChart() {
             }]
         },
         options: { 
+            maintainAspectRatio: false,
             animation: animConfig, 
             plugins: { title: { display: true, text: 'XGBoost Error Reduction (Stepped)' }, legend: { display: false } },
             scales: { x: { title: { display: true, text: 'Boosting Rounds' } }, y: { title: { display: true, text: 'RMSE' } } }
@@ -234,7 +237,7 @@ function renderRadarChart() {
                 { label: 'XGBoost', data: [90, 85, 90, 90, 60], backgroundColor: 'rgba(244, 63, 94, 0.2)', borderColor: '#F43F5E' }
             ]
         },
-        options: { animation: animConfig, scales: { r: { min: 0, max: 100, ticks: {display: false} } } }
+        options: { maintainAspectRatio: false, animation: animConfig, scales: { r: { min: 0, max: 100, ticks: {display: false} } } }
     });
 }
 
@@ -246,7 +249,7 @@ function renderAccuracyChart() {
             labels: ['Base Models Avg', 'Stacked Meta-Model'],
             datasets: [{ label: 'R² Accuracy (%)', data: [97.50, 97.85], backgroundColor: ['#94A3B8', '#4F46E5'], borderRadius: 6 }]
         },
-        options: { animation: animConfig, scales: { y: { min: 96, max: 100 } }, plugins: { legend: { display: false } } }
+        options: { maintainAspectRatio: false, animation: animConfig, scales: { y: { min: 96, max: 100 } }, plugins: { legend: { display: false } } }
     });
 }
 
@@ -269,6 +272,7 @@ function renderScatterChart() {
             }]
         },
         options: { 
+            maintainAspectRatio: false,
             animation: animConfig, 
             scales: { 
                 x: { title: {display: true, text: 'Actual Current (A)'} },
@@ -286,7 +290,7 @@ function renderCapacitanceChart() {
             labels: ['Experimental Data', 'ML Prediction'],
             datasets: [{ label: 'F g⁻¹', data: [0.01798, 0.01732], backgroundColor: ['#94A3B8', '#10B981'], borderRadius: 6 }]
         },
-        options: { animation: animConfig, plugins: { legend: { display: false } } }
+        options: { maintainAspectRatio: false, animation: animConfig, plugins: { legend: { display: false } } }
     });
 }
 
