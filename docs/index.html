@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Supercapacitor ML Research Dashboard</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -234,7 +234,7 @@
                             <h4>Support & Open-Source Resources</h4>
                             <p>Access the datasets, validation files, and complete model architecture used in this research.</p>
                             <div class="resource-links">
-                                <a href="https://github.com/AnirudhRao-24/cv-ml-supercapacitor-bfo" target="_blank">💻 GitHub Repository</a>
+                                <a href="https://github.com/AnirudhRao-24/cv-ml-supercapacitor-bfo" target="_blank" class="btn-outline">💻 GitHub Repository</a>
                             </div>
                         </div>
                     </div>
@@ -258,21 +258,26 @@
                         
                         <div class="input-group">
                             <label>Scan Rate Profile</label>
-                            <select class="custom-select">
-                                <option>60 mV/s (Unseen Validation Data)</option>
+                            <select id="input-scan-rate" class="custom-select">
+                                <option value="60">60 mV/s (Unseen Validation Data)</option>
                             </select>
                         </div>
                         <div class="input-group">
                             <label>Dopant Matrix</label>
-                            <select class="custom-select" disabled>
-                                <option>Zn/Co (Ratio: 3.5)</option>
+                            <select id="input-dopant" class="custom-select" disabled>
+                                <option value="BFZO3">Zn/Co (Ratio: 3.5)</option>
                             </select>
                         </div>
                         <button id="btn-run-demo" class="btn-primary w-100" style="margin-top: 20px;">Execute Prediction Stack</button>
+                        
+                        <div id="export-controls" style="display: none; margin-top: 20px; gap: 10px; flex-direction: column;">
+                            <button id="btn-export-csv" class="btn-outline w-100">📥 Download CSV Data</button>
+                            <button id="btn-export-png" class="btn-outline w-100">🖼️ Save Graph as PNG</button>
+                        </div>
                     </div>
 
                     <div class="chart-panel glass-panel">
-                        <div class="chart-wrapper">
+                        <div class="chart-wrapper" style="background: #ffffff; padding: 10px; border-radius: 8px;">
                             <canvas id="liveChart"></canvas>
                         </div>
                         <div class="metrics-grid" id="metrics-grid" style="display: none;">
