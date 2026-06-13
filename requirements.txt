@@ -8,9 +8,8 @@ scikit-learn==1.3.2
 xgboost==2.0.3
 joblib==1.3.2
 
-# Deep Learning (Strictly matching Colab's Modern Engine)
-tensorflow-cpu==2.16.1
-keras>=3.0.0
+# Deep Learning (Perfectly matching Colab's 2.20.0 engine)
+tensorflow==2.20.0
 
 # API Deployment
 fastapi>=0.100.0
