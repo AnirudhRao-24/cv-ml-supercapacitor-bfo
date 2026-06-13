@@ -14,3 +14,8 @@ joblib>=1.1.0
 # Visualization (For Jupyter Notebook)
 matplotlib>=3.5.0
 seaborn>=0.11.2
+
+# API Deployment
+fastapi>=0.68.0
+uvicorn>=0.15.0
+pydantic>=1.8.0
