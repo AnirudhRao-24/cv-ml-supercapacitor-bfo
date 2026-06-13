@@ -8,9 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -21,7 +19,6 @@
                 <h2>Researcher Portal</h2>
                 <p>Sign in to access the ML pipeline.</p>
             </div>
-            
             <div class="input-group">
                 <label for="email">Institutional Email</label>
                 <input type="email" id="email" placeholder="researcher@university.edu" required>
@@ -30,7 +27,6 @@
                 <label for="password">Password</label>
                 <input type="password" id="password" placeholder="••••••••" required>
             </div>
-            
             <button id="btn-login" class="btn-primary w-100">Authenticate Portal</button>
             <p id="error-msg" class="error-message"></p>
         </div>
@@ -44,13 +40,12 @@
             </div>
             <div class="nav-tabs">
                 <button id="btn-tab-slides" class="tab-btn active">Presentation Deck</button>
-                <button id="btn-tab-demo" class="tab-btn">Live Simulation</button>
+                <button id="btn-tab-demo" class="tab-btn">Live Sandbox</button>
                 <button id="btn-logout" class="btn-outline">Sign Out</button>
             </div>
         </nav>
 
         <div class="container">
-            
             <div id="slides-section" class="section active">
                 <div class="slide-container glass-panel">
                     
@@ -234,7 +229,7 @@
                             <h4>Support & Open-Source Resources</h4>
                             <p>Access the datasets, validation files, and complete model architecture used in this research.</p>
                             <div class="resource-links">
-                                <a href="https://github.com/AnirudhRao-24/cv-ml-supercapacitor-bfo" target="_blank" class="btn-outline">💻 GitHub Repository</a>
+                                <a href="https://github.com/anirudhrao2007/cv-ml-supercapacitor-bfo" target="_blank" class="btn-outline">💻 GitHub Repository</a>
                             </div>
                         </div>
                     </div>
@@ -254,18 +249,25 @@
                 <div class="demo-layout">
                     <div class="control-panel glass-panel">
                         <h3>Model Parameters</h3>
-                        <p class="subtitle">Select an unseen dataset to pass through the deployed Meta-Model.</p>
+                        <p class="subtitle">Execute the live AI Meta-Model.</p>
                         
                         <div class="input-group">
-                            <label>Scan Rate Profile</label>
+                            <label>Scan Rate (mV/s)</label>
                             <select id="input-scan-rate" class="custom-select">
-                                <option value="60">60 mV/s (Unseen Validation Data)</option>
+                                <option value="10">10 mV/s</option>
+                                <option value="20">20 mV/s</option>
+                                <option value="40">40 mV/s</option>
+                                <option value="60" selected>60 mV/s (Validation Baseline)</option>
+                                <option value="80">80 mV/s</option>
+                                <option value="100">100 mV/s</option>
                             </select>
                         </div>
                         <div class="input-group">
                             <label>Dopant Matrix</label>
-                            <select id="input-dopant" class="custom-select" disabled>
-                                <option value="BFZO3">Zn/Co (Ratio: 3.5)</option>
+                            <select id="input-dopant" class="custom-select">
+                                <option value="BFZO1">BFZO-1 (Low Substitution)</option>
+                                <option value="BFZO2">BFZO-2 (Medium Substitution)</option>
+                                <option value="BFZO3" selected>BFZO-3 (High Substitution)</option>
                             </select>
                         </div>
                         <button id="btn-run-demo" class="btn-primary w-100" style="margin-top: 20px;">Execute Prediction Stack</button>
