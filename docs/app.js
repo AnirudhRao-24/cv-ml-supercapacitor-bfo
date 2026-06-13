@@ -2,10 +2,9 @@
 // GLOBALS & CHART.JS PREMIUM STYLING
 // ==========================================
 Chart.defaults.font.family = "'Inter', sans-serif";
-Chart.defaults.color = '#64748B'; // Text-light
+Chart.defaults.color = '#64748B';
 Chart.defaults.scale.grid.color = '#E2E8F0';
 
-// Global variables to store the latest run for exporting
 let currentRunPotential = [];
 let currentRunPredicted = [];
 
@@ -124,7 +123,6 @@ function updateSlideUI() {
 btnPrev.addEventListener('click', () => { currentSlide--; updateSlideUI(); });
 btnNext.addEventListener('click', () => { currentSlide++; updateSlideUI(); });
 
-// --- Graph Generating Functions ---
 function renderDatasetChart() {
     if(charts.dataset) charts.dataset.destroy();
     charts.dataset = new Chart(document.getElementById('chart-dataset'), {
@@ -218,20 +216,13 @@ function renderCapacitanceChart() {
 // 4. ML PREPROCESSING & API CONNECTION MODULE
 // ==========================================
 
-// Preprocess features strictly to match Scikit-Learn training requirements
 function preprocessInput(potentialArray, scanRate, redoxState, dopantSelection) {
     const isOxidation = redoxState === 'Oxidation' ? 1 : 0;
-    
     let dopantMatrix = [0, 0, 0];
     if (dopantSelection === 'BFZO1') dopantMatrix = [1, 0, 0];
     if (dopantSelection === 'BFZO2') dopantMatrix = [0, 1, 0];
     if (dopantSelection === 'BFZO3') dopantMatrix = [0, 0, 1];
-
-    const finalFeatures = potentialArray.map(potential => {
-        return [potential, scanRate, isOxidation, ...dopantMatrix];
-    });
-
-    return finalFeatures;
+    return potentialArray.map(potential => [potential, scanRate, isOxidation, ...dopantMatrix]);
 }
 
 let liveChartInstance = new Chart(document.getElementById('liveChart'), {
@@ -245,7 +236,6 @@ let liveChartInstance = new Chart(document.getElementById('liveChart'), {
     }
 });
 
-// Primary Inference Listener
 document.getElementById('btn-run-demo').addEventListener('click', async () => {
     const btn = document.getElementById('btn-run-demo');
     const metricsGrid = document.getElementById('metrics-grid');
@@ -256,21 +246,16 @@ document.getElementById('btn-run-demo').addEventListener('click', async () => {
     btn.innerText = "Processing Prediction Pipeline...";
     btn.disabled = true;
 
-    // Hardcoded target values for validation test
     const potentialValues = [-0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.4, 0.3, 0.2, 0.1, 0, -0.1, -0.2, -0.3, -0.4, -0.5];
-    const actualCurrent = [-0.015, -0.012, -0.005, 0.005, 0.012, 0.018, 0.022, 0.019, 0.012, 0.005, 0.002, -0.005, -0.012, -0.018, -0.021, -0.019, -0.012, -0.005, -0.008, -0.012, -0.015];
-    
-    // UI Parameters 
     const uiScanRate = parseInt(document.getElementById('input-scan-rate').value);
     const uiDopant = document.getElementById('input-dopant').value;
-    
-    // Encode UI values using JS Module
     const processedFeatures = preprocessInput(potentialValues, uiScanRate, 'Oxidation', uiDopant);
+    
     let finalPrediction = [];
+    const isValidationRun = (uiScanRate === 60 && uiDopant === 'BFZO3');
 
     try {
-        // Attempt to connect to the deployed Render API backend
-        const response = await fetch('https://cv-ml-supercapacitor-bfo.onrender.com/predict', {
+        const response = await fetch('https://cv-ml-api.onrender.com/predict', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ features: processedFeatures })
@@ -281,7 +266,6 @@ document.getElementById('btn-run-demo').addEventListener('click', async () => {
         const data = await response.json();
         finalPrediction = data.predicted_current;
 
-        // Dynamic XAI Update (Update Random Forest Feature Importance on Slide 9)
         if (charts.rf && data.feature_importance) {
             const importancePercentages = data.feature_importance.map(val => (val * 100).toFixed(1));
             charts.rf.data.datasets[0].data = importancePercentages;
@@ -290,28 +274,35 @@ document.getElementById('btn-run-demo').addEventListener('click', async () => {
 
     } catch (error) {
         console.warn("Live API unreachable. Falling back to secure presentation offline-mode.", error);
-        // Fail-Safe Fallback: Ensures presentation does not break if Render server goes offline
         finalPrediction = [-0.0148, -0.0118, -0.0048, 0.0052, 0.0119, 0.0178, 0.0221, 0.0188, 0.0118, 0.0048, 0.0019, -0.0048, -0.0118, -0.0178, -0.0208, -0.0188, -0.0118, -0.0048, -0.0078, -0.0118, -0.0148];
     }
 
-    // Save outputs to globals for CSV Export
     currentRunPotential = potentialValues;
     currentRunPredicted = finalPrediction;
 
-    // Update Main Graph
+    // --- Dynamic Chart Rendering ---
+    let newDatasets = [];
+    
+    if (isValidationRun) {
+        const actualCurrent = [-0.015, -0.012, -0.005, 0.005, 0.012, 0.018, 0.022, 0.019, 0.012, 0.005, 0.002, -0.005, -0.012, -0.018, -0.021, -0.019, -0.012, -0.005, -0.008, -0.012, -0.015];
+        newDatasets.push({ label: 'Experimental Curve', data: actualCurrent, borderColor: '#1E293B', backgroundColor: 'rgba(30, 41, 59, 0.05)', borderWidth: 2, tension: 0.4, fill: true });
+        liveChartInstance.options.plugins.title.text = 'Validation: Actual vs Predicted CV Curve at 60mV/s';
+    } else {
+        liveChartInstance.options.plugins.title.text = `Live AI Prediction: ${uiDopant} at ${uiScanRate}mV/s`;
+    }
+
+    newDatasets.push({ label: 'Meta-Model Prediction', data: finalPrediction, borderColor: '#F43F5E', borderWidth: 3, borderDash: [5, 5], tension: 0.4, fill: false });
+
     liveChartInstance.data.labels = potentialValues;
-    liveChartInstance.data.datasets = [
-        { label: 'Experimental Curve', data: actualCurrent, borderColor: '#1E293B', backgroundColor: 'rgba(30, 41, 59, 0.05)', borderWidth: 2, tension: 0.4, fill: true },
-        { label: 'Meta-Model Prediction', data: finalPrediction, borderColor: '#F43F5E', borderWidth: 3, borderDash: [5, 5], tension: 0.4, fill: false }
-    ];
+    liveChartInstance.data.datasets = newDatasets;
     liveChartInstance.options.animation = { duration: 2000, easing: 'easeOutQuart' };
-    liveChartInstance.options.plugins.title.text = 'Validation: Actual vs Predicted CV Curve at 60mV/s';
     liveChartInstance.update();
 
-    // Reveal UI Utilities
     setTimeout(() => {
-        metricsGrid.style.display = 'grid';
-        metricsGrid.style.animation = 'slideUp 0.8s ease forwards';
+        if (isValidationRun) {
+            metricsGrid.style.display = 'grid';
+            metricsGrid.style.animation = 'slideUp 0.8s ease forwards';
+        }
         exportControls.style.display = 'flex';
         exportControls.style.animation = 'fadeIn 0.8s ease forwards';
         btn.innerText = "Execute Prediction Stack";
@@ -339,7 +330,6 @@ document.getElementById('btn-export-csv').addEventListener('click', () => {
 document.getElementById('btn-export-png').addEventListener('click', () => {
     const link = document.createElement('a');
     link.download = 'ML_Validation_Curve.png';
-    // Ensure Chart canvas has white background before export, otherwise transparent PNGs look bad
     const destCanvas = document.createElement('canvas');
     const sourceCanvas = document.getElementById('liveChart');
     destCanvas.width = sourceCanvas.width;
@@ -348,7 +338,6 @@ document.getElementById('btn-export-png').addEventListener('click', () => {
     destCtx.fillStyle = '#ffffff';
     destCtx.fillRect(0, 0, destCanvas.width, destCanvas.height);
     destCtx.drawImage(sourceCanvas, 0, 0);
-    
     link.href = destCanvas.toDataURL("image/png");
     link.click();
 });
