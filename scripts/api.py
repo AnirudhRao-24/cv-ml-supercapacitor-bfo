@@ -29,6 +29,14 @@ rf_model = joblib.load(os.path.join(MODELS_DIR, 'rf_model.pkl'))
 class CVRequest(BaseModel):
     features: list
 
+@app.get("/")
+def home():
+    return {
+        "status": "Online",
+        "project": "BiFeO3 ML-Supercapacitor Pipeline",
+        "message": "API is active. Send POST requests to /predict to execute the model."
+    }
+
 @app.post("/predict")
 def predict_current(request: CVRequest):
     input_data = np.array(request.features)
