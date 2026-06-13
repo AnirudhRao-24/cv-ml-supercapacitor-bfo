@@ -270,7 +270,7 @@ document.getElementById('btn-run-demo').addEventListener('click', async () => {
 
     try {
         // Attempt to connect to the deployed Render API backend
-        const response = await fetch('https://cv-ml-api.onrender.com/predict', {
+        const response = await fetch('https://cv-ml-supercapacitor-bfo.onrender.com', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ features: processedFeatures })
