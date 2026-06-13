@@ -5,7 +5,7 @@ import joblib
 import numpy as np
 import os
 
-# Import TensorFlow to load the .h5 model
+# Import TensorFlow to load the model
 from tensorflow.keras.models import load_model
 
 # Initialize the API
@@ -31,10 +31,10 @@ MODELS_DIR = os.path.join(BASE_DIR, '../models')
 print("Loading ML Pipeline into memory...")
 scaler = joblib.load(os.path.join(MODELS_DIR, 'standard_scaler.pkl'))
 
-# Load all 3 Base Models
+# Load all 3 Base Models (UPDATED TO LOAD .keras)
 rf_model = joblib.load(os.path.join(MODELS_DIR, 'rf_model.pkl'))
 xgb_model = joblib.load(os.path.join(MODELS_DIR, 'xgb_model.pkl'))
-ann_model = load_model(os.path.join(MODELS_DIR, 'ann_model.h5'))
+ann_model = load_model(os.path.join(MODELS_DIR, 'ann_model.keras'))
 
 # Load the Meta-Model
 meta_model = joblib.load(os.path.join(MODELS_DIR, 'meta_stacked_model.pkl'))
@@ -57,7 +57,6 @@ def predict_current(request: CVRequest):
     scaled_data = scaler.transform(input_data)
     
     # 2. LEVEL 0: Generate predictions from the Base Models
-    # .flatten() is used because neural networks output 2D arrays, but sklearn needs 1D
     ann_pred = ann_model.predict(scaled_data).flatten()
     rf_pred = rf_model.predict(scaled_data)
     xgb_pred = xgb_model.predict(scaled_data)
